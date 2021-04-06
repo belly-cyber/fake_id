@@ -89,11 +89,11 @@ class identity:
     
     def __init__(self):
 
-        self.first=random.choice(dic['first']).lower()
+        self.first=random.choice(dic['first'])
         
-        self.last=random.choice(dic['last']).lower()
+        self.last=random.choice(dic['last'])
         
-        self.email=random.choice(dic['email']).lower()
+        self.email=random.choice(dic['email'])
         
         self.random_digits=str(random.random())[2:random.choice([6,8])]
         
@@ -109,7 +109,7 @@ class identity:
         
         self.random_email=''.join(self.varibles)+'@'+self.email
         
-        self.info='\nfirst name: '+self.first+"\nlast  name: "+self.last+'\n\temail: '+self.random_email+'\n\t\tpassword:'+self.passwd+'\n'
+        self.info='\nfirst name: '+self.first.capitalize()+"\nlast  name: "+self.last.capitalize()+'\n\temail: '+self.random_email+'\n\t\tpassword:'+self.passwd+'\n'
         
         r = requests.get("https://thispersondoesnotexist.com/image", headers={'User-Agent': 'My User Agent 1.0'}).content
         with open('static/image.jpg','wb') as f:
