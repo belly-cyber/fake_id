@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # coding: utf-8
 
 # In[1]:
@@ -54,14 +54,14 @@ else:
     print('no stored file found, parsing ssa.gov and mongabay.com for names')
     import requests
     raw_first_names=requests.get('https://www.ssa.gov/oact/babynames/decades/names2010s.html','utf-8')
-    first_names=[x[5:-5] for x in re.findall(r'<td >.*?</td>',raw_first_names.text)]
-    
+    first_names=[x.lower() for x in re.findall(r'(?<=<td >).*?(?=</td>)',raw_first_names.text)]
+
     raw_last_names=requests.get('https://names.mongabay.com/most_common_surnames.htm')
-    last_names=[x[8:-6] for x in re.findall(r'<tr><td>[a-zA-Z]{2,20}</td><',raw_last_names.text)]    
-    
+    last_names=[x.lower() for x in re.findall(r'(?<=<tr><td>)[a-zA-Z]{2,20}(?=</td><)',raw_last_names.text)]    
+
     raw_domains=requests.get('https://github.com/mailcheck/mailcheck/wiki/List-of-Popular-Domains',allow_redirects=False)
-    email_domain=[x[1:-1] for x in re.findall(r'>"[a-zA-Z].*?\.[a-zA-Z\.].*?"<',raw_domains.text)]    
-    
+    email_domain=[x.lower() for x in re.findall(r'(?<=>")[a-zA-Z].*?\.[a-zA-Z\.].*?(?="<)',raw_domains.text)]    
+
     #creates db if it doesnt exist
     database=sqlite3.connect("fake_id.db")
     curs=database.cursor()
@@ -89,11 +89,11 @@ class identity:
     
     def __init__(self):
 
-        self.first=random.choice(dic['first'])
+        self.first=random.choice(dic['first']).lower()
         
-        self.last=random.choice(dic['last'])
+        self.last=random.choice(dic['last']).lower()
         
-        self.email=random.choice(dic['email'])
+        self.email=random.choice(dic['email']).lower()
         
         self.random_digits=str(random.random())[2:random.choice([6,8])]
         
