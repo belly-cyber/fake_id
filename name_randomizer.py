@@ -1,9 +1,6 @@
 #!/usr/bin/env python3
 # coding: utf-8
 
-# In[1]:
-
-
 import re
 import random
 import string
@@ -11,15 +8,12 @@ import requests
 import os
 import sqlite3
 
-# In[2]:
-
-
 def random_string(word):
         termination=random.choice(range(1,len(word)))
         rand_string=word[:termination]
         return(rand_string)
 
-def pass_maker():
+def password_maker():
     special_characters='!@#$%&'
     chars=random.choices(string.ascii_letters,k=16)
     num=random.choice([1,2,3,4])
@@ -76,14 +70,14 @@ else:
     
     dic={'first':first_names,
          'last':last_names,
-         'email':email_domain}
+         'email':email_domain
+        }
+
     table_maker(database,'first_names',first_names)
     table_maker(database,'last_names',last_names)
     table_maker(database,'email_domain',email_domain)
+
     database.close()
-
-# In[10]:
-
 
 class identity:
     
@@ -98,19 +92,28 @@ class identity:
         self.random_digits=str(random.random())[2:random.choice([6,8])]
         
         self.varibles=[random_string(x) for x in [self.first,self.last,self.random_digits]]
+
         [self.varibles.append(x) for x in ['.','.','.'][:random.choice([0,1,2,])]]
+
         random.shuffle(self.varibles)
+
         #print(self.varibles)
         while ('.' in self.varibles[0] or '.' in self.varibles[-1] or '..' in ''.join(self.varibles)) == True:
             #print(''.join(self.varibles))
             random.shuffle(self.varibles)
             #print(self.varibles)
-        self.passwd=pass_maker()
+        
+        self.passwd=password_maker()
         
         self.random_email=''.join(self.varibles)+'@'+self.email
         
-        self.info='\nfirst name: '+self.first.capitalize()+"\nlast  name: "+self.last.capitalize()+'\n\temail: '+self.random_email+'\n\t\tpassword:'+self.passwd+'\n'
+        self.info = f'''
+        first name: {self.first.capitalize()}
+        last name: {self.last.capitalize()}
         
+        email: {self.random_email}
+        passwd: {self.passwd}
+        '''        
         r = requests.get("https://thispersondoesnotexist.com/image", headers={'User-Agent': 'My User Agent 1.0'}).content
         with open('static/image.jpg','wb') as f:
             f.write(r)
